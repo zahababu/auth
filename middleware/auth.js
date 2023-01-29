@@ -8,7 +8,8 @@ const authUser = async(req, res, next) => {
         throw new CustomError.UnauthenticatedError('authnt')
     }
     try {
-        const payload = isTokenValid({ token })
+        const { name, userId, role } = isTokenValid({ token })
+        req.user = { name: name, userId: userId, role: role }
         console.log(payload);
         next()
     } catch (error) {
@@ -16,7 +17,19 @@ const authUser = async(req, res, next) => {
     }
 }
 
+const authPerm = (...roles) => {
+    return (req, res, next) => {
+        if (!roles.includes(req.user.role)) {
+            throw new CustomError.UnauthorizedError(
+                'Unauthorized to access this route'
+            );
+        }
+        next();
+    };
+};
+
 module.exports = {
     authUser,
+    authPerm
     // authorizePermissions,
 };
