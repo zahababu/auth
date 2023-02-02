@@ -41,6 +41,7 @@ const cars = require('./routes/car')
 const hotels = require('./routes/hotel')
 const auth = require('./routes/auth')
 const user = require('./routes/user')
+const product = require('./routes/product')
 
 // middleware
 const notFoundMiddleware = require('./middleware/not-found');
@@ -72,7 +73,7 @@ app.use('/hotels/v1', hotels)
 app.use('/cars/v1', cars)
 app.use('/user/v1', user)
 app.use('/', auth)
-
+app.use('/products/v1', product)
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
